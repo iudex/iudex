@@ -32,6 +32,8 @@ contract Storage {
     bytes32 id;
     address[] ethaddrs; // not yet populated
     mapping (uint8 => Account) accounts;
+    mapping (bytes32 => bytes) extraDataBytes; // unverified data
+    mapping (bytes32 => uint) extraDataUnit; // unverified data
   }
 
   // map unique id to person
@@ -47,6 +49,12 @@ contract Storage {
     addressPresent[addr] = true;
     addressToPersonId[addr] = id;
     // FIXME: amend person.ethaddrs too
+  }
+
+  function unbindEthereumAddress(address addr, bytes32 id) internal {
+    delete addressPresent[addr];
+    delete addressToPersonId[addr];
+    // FIXME: amend person.ethaddress too
   }
 
   // For methods which needs to come from a registered user
@@ -80,8 +88,16 @@ contract Storage {
   }
 
   // remove ethereum link
-  function unlinkAddress() {
+  function unlinkAddress(address addr) useronly {
+    bytes32 id = addressToPersonId[addr];
 
+    // does the userid of `addr` belongs to the sender?
+    if (addressToPersonId[msg.sender] != id)
+      throw;
+
+    // FIXME: check if its the only address linked and reject if it is
+
+    unbindEthereumAddress(addr, id);
   }
 
   // Start the verification process, call up the actual verifier and expect an answer in `updateAccount`
