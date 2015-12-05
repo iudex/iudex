@@ -39,6 +39,8 @@ contract Twitter is accountProvider {
       _query[i++] = _tail[j];
     _query[i++] = 0;
 
-    expectedId[id] = oraclize_query("URL", query);
+    //expectedId[oraclize_query("URL", query)] = id;
+    bytes32 oraclizeId = oraclize_query("URL", query);
+    expectedId[oraclizeId] = id;
   }
 }
