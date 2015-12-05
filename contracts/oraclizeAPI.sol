@@ -26,8 +26,9 @@ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
 THE SOFTWARE.
 */
+import "std.sol";
 
-contract OraclizeI {
+contract OraclizeI is abstract {
     address public cbAddress;
     function query(uint _timestamp, string _datasource, string _arg) returns (bytes32 _id);
     function query_withGasLimit(uint _timestamp, string _datasource, string _arg, uint _gaslimit) returns (bytes32 _id);
@@ -38,7 +39,7 @@ contract OraclizeI {
     function useCoupon(string _coupon);
     function setProofType(byte _proofType);
 }
-contract OraclizeAddrResolverI {
+contract OraclizeAddrResolverI is abstract {
     function getAddress() returns (address _addr);
 }
 contract usingOraclize {
@@ -215,4 +216,3 @@ contract usingOraclize {
 
 }
 // </ORACLIZE_API>
-
