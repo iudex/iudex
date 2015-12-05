@@ -1,6 +1,7 @@
 import "oraclizeAPI.sol";
+import "std.sol";
 
-contract accountProviderBase is usingOraclize {
+contract accountProviderBase is abstract, usingOraclize {
   function nibbleToChar(uint nibble) internal returns (uint ret) {
     if (nibble > 9)
       return nibble + 87; // nibble + 'a'- 10

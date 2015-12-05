@@ -1,12 +1,12 @@
 //
-// This contract will validate that a twitter message url:
+// This contract will validate that a github gist url:
 // 1) corresponds to a given username
 // 2) containts an expected message (the user identifier)
 //
 
 import "accountProviderBase.sol";
 
-contract Twitter is accountProviderBase {
+contract Github is accountProviderBase {
   Lookup lookup;
 
   address owner;
@@ -17,7 +17,7 @@ contract Twitter is accountProviderBase {
     owner = addr;
   }
 
-  function Twitter() {
+  function Github() {
     owner = msg.sender;
   }
 
@@ -35,19 +35,19 @@ contract Twitter is accountProviderBase {
     // this is basically a bytes32 to hexstring piece
     string memory expected = string(addressToBytes(address(expectedId[myid])));
     bool asExpected = strCompare(expected, result) == 0;
-    Storage(lookup.addrStorage()).updateAccount(lookup.accountProvider_TWITTER(), expectedId[myid], asExpected, myid);
+    Storage(lookup.addrStorage()).updateAccount(lookup.accountProvider_GITHUB(), expectedId[myid], asExpected, myid);
   }
 
-  // ensure that the proofLocation corresponds to a twitter.com URL for the user `userId`
+  // ensure that the proofLocation corresponds to a gist.github.com URL for the user `userId`
   function verifyUrl(string userId, string proofLocation) internal returns (bool){
     bytes memory _userId = bytes(userId);
-    string memory twitterPrefix = "://twitter.com/";
-    bytes memory _twitterPrefix = bytes(twitterPrefix);
-    string memory urlHead = new string(_twitterPrefix.length + _userId.length + 1);
+    string memory githubPrefix = "://gist.github.com/";
+    bytes memory _githubPrefix = bytes(githubPrefix);
+    string memory urlHead = new string(_githubPrefix.length + _userId.length + 1);
     bytes memory _urlHead = bytes(urlHead);
     uint i = 0;
-    for (uint j = 0; j < _twitterPrefix.length; j++)
-      _urlHead[i++] = _twitterPrefix[j];
+    for (uint j = 0; j < _githubPrefix.length; j++)
+      _urlHead[i++] = _githubPrefix[j];
     for (j = 0; j < _userId.length; j++)
       _urlHead[i++] = _userId[j];
     _urlHead[i++] = byte("/");
@@ -60,8 +60,6 @@ contract Twitter is accountProviderBase {
 
   // start the verification process and call oraclize with the URL
   function verify(bytes32 id, string userId, string proofLocation) coupon("HackEtherCamp") {
-  //    bytes32 oraclizeId = oraclize_query("html(https://twitter.com/oraclizeit/status/671316655893561344).xpath(//*[contains(@class, 'tweet-text')]/text())");
-
     // check that userId matches the username in proofLocation
     if (!verifyUrl(userId, proofLocation))
       throw;
@@ -69,18 +67,18 @@ contract Twitter is accountProviderBase {
     // build up the request string
     string memory head = "html(";
     bytes memory _head = bytes(head);
-    string memory tail = ").xpath(//*[contains(@class, 'tweet-text')]/text())";
+    string memory tail = ").xpath(//*[contains(@class, 'blob-code')]/text())";
     bytes memory _tail = bytes(tail);
 
-    bytes memory _tweetUrl = bytes(proofLocation);
+    bytes memory _gistUrl = bytes(proofLocation);
 
-    string memory query = new string(_head.length + _tail.length + _tweetUrl.length + 2);
+    string memory query = new string(_head.length + _tail.length + _gistUrl.length + 2);
     bytes memory _query = bytes(query);
     uint i = 0;
     for (uint j = 0; j < _head.length; j++)
       _query[i++] = _head[j];
-    for (j = 0; j < _tweetUrl.length; j++)
-      _query[i++] = _tweetUrl[j];
+    for (j = 0; j < _gistUrl.length; j++)
+      _query[i++] = _gistUrl[j];
     for (j = 0; j < _tail.length; j++)
       _query[i++] = _tail[j];
     _query[i++] = 0;

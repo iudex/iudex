@@ -20,9 +20,11 @@ contract Lookup {
     addrStorage = addr;
   }
 
-  uint8 public accountProvider_TWITTER = 0;
-  uint8 public accountProvider_FACEBOOK = 1;
-  uint8 public accountProvider_LINKEDIN = 2;
+
+  uint8 public accountProvider_ALL = 0;
+  uint8 public accountProvider_TWITTER = 1;
+  uint8 public accountProvider_FACEBOOK = 2;
+  uint8 public accountProvider_GITHUB = 3;
 
   mapping(uint8 => address) public accountProviders;
   function setAccountProvider(uint8 accountProvider, address addr) owneronly {

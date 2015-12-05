@@ -13,23 +13,30 @@
 import "oraclizeAPI.sol";
 
 
-contract Iudex {
+contract Iudex is abstract {
     uint public accountProvider_ALL = 0;
     uint public extraData_BITCOIN = 0;
-    function getScore(uint scoreType, uint accountType, string accountID) public returns (uint);
+    mapping (address => bytes32) public addressToPersonId;
+    function getScore(uint accountProvider, bytes32 id) public returns (uint);
+}
+
+contract LookupI is abstract {
+    address public addrStorage;
 }
 
 contract EthBtcEscrow is usingOraclize {
-  /*
+
   uint mBTC;
   address ethAddr;
   address ethReturnAddr;
   string reqURL;
   uint timestampLimit;
 
-  function getMinConfirmationsByBTCAddr(string _btcAddr) internal returns (uint){
-      Iudex iudex = Iudex(0x0);
-      uint score = iudex.getScore(iudex.scoreType_ALL(), iudex.accountType_BITCOIN(), _btcAddr);
+  address constant lookupAddr = 0x0;
+
+  function getMinConfirmationsByAddr(address _ethAddr) internal returns (uint){
+      Iudex iudex = Iudex(LookupI(lookupAddr).addrStorage());
+      uint score = iudex.getScore(iudex.accountProvider_ALL(), iudex.addressToPersonId(_ethAddr));
       return 10 - ((score - 1)/100000);
   }
 
@@ -41,7 +48,7 @@ contract EthBtcEscrow is usingOraclize {
     string memory head = "json(https://chain.so/api/v2/get_address_balance/BTC/";
     bytes memory _head = bytes(url);
     bytes memory __btcAddr = bytes(_btcAddr);
-    uint confs = getMinConfirmationsByBTCAddr(_btcAddr);
+    uint confs = getMinConfirmationsByAddr(_ethAddr);
     string memory tail = ").data.confirmed_balance";
     bytes memory _tail = bytes(tail);
     string memory url = new string(_head.length + __btcAddr.length + 2 + _tail.length);
@@ -65,5 +72,5 @@ contract EthBtcEscrow is usingOraclize {
     if (parseInt(result, 3) >= mBTC) ethAddr.send(this.balance);
     else if (now > timestampLimit) ethReturnAddr.send(this.balance);
     else oraclize_query(60*10, "URL", reqURL);
-  }*/
+  }
 }
