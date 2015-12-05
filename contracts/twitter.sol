@@ -1,24 +1,70 @@
-// Example:
-// html(https://twitter.com/oraclizeit/status/671316655893561344).xpath(//*[contains(@class, 'tweet-text')]/text())
+//
+// This contract will validate that a twitter message url:
+// 1) corresponds to a given username
+// 2) containts an expected message (the user identifier)
+//
 
-import "accountProvider.sol";
+import "accountProviderBase.sol";
 
-contract Twitter is accountProvider {
+contract Twitter is accountProviderBase {
+  Lookup lookup;
+
+  address owner;
+
+  modifier owneronly { if (msg.sender == owner) _ }
+
+  function setOwner(address addr) owneronly {
+    owner = addr;
+  }
+
+  function Twitter() {
+    owner = msg.sender;
+  }
+
+  function setLookup(address addr) owneronly {
+    lookup = Lookup(addr);
+  }
+
   // map the expected identifier to an oraclize identifier
   mapping (bytes32 => bytes32) expectedId;
 
+  // callbcak from oraclize with the result, let the storage contract know
   function __callback(bytes32 myid, string result) {
     if (msg.sender != oraclize_cbAddress()) throw;
 
     // this is basically a bytes32 to hexstring piece
     string memory expected = string(addressToBytes(address(expectedId[myid])));
-    if (strCompare(expected, result) == 0) {
-      // matches, call back storage and let it know that expectedId has verified twitter
-    }
+    bool asExpected = strCompare(expected, result) == 0;
+    Storage(lookup.addrStorage()).updateAccount(lookup.accountProvider_TWITTER(), expectedId[myid], asExpected, myid);
   }
 
-  function verify(bytes32 id, string tweetUrl) {
+  // ensure that the proofLocation corresponds to a twitter.com URL for the user `userId`
+  function verifyUrl(string userId, string proofLocation) internal returns (bool){
+    bytes memory _userId = bytes(userId);
+    string memory twitterPrefix = "://twitter.com/";
+    bytes memory _twitterPrefix = bytes(twitterPrefix);
+    string memory urlHead = new string(_twitterPrefix.length + _userId.length + 1);
+    bytes memory _urlHead = bytes(urlHead);
+    uint i = 0;
+    for (uint j = 0; j < _twitterPrefix.length; j++)
+      _urlHead[i++] = _twitterPrefix[j];
+    for (j = 0; j < _userId.length; j++)
+      _urlHead[i++] = _userId[j];
+    _urlHead[i++] = byte("/");
+
+    if (indexOf(string(_urlHead), proofLocation) == -1)
+      return false;
+
+    return true;
+  }
+
+  // start the verification process and call oraclize with the URL
+  function verify(bytes32 id, string userId, string proofLocation) coupon("HackEtherCamp") {
   //    bytes32 oraclizeId = oraclize_query("html(https://twitter.com/oraclizeit/status/671316655893561344).xpath(//*[contains(@class, 'tweet-text')]/text())");
+
+    // check that userId matches the username in proofLocation
+    if (!verifyUrl(userId, proofLocation))
+      throw;
 
     // build up the request string
     string memory head = "html(";
@@ -26,7 +72,7 @@ contract Twitter is accountProvider {
     string memory tail = ").xpath(//*[contains(@class, 'tweet-text')]/text())";
     bytes memory _tail = bytes(tail);
 
-    bytes memory _tweetUrl = bytes(tweetUrl);
+    bytes memory _tweetUrl = bytes(proofLocation);
 
     string memory query = new string(_head.length + _tail.length + _tweetUrl.length + 2);
     bytes memory _query = bytes(query);
@@ -39,7 +85,6 @@ contract Twitter is accountProvider {
       _query[i++] = _tail[j];
     _query[i++] = 0;
 
-    //expectedId[oraclize_query("URL", query)] = id;
     bytes32 oraclizeId = oraclize_query("URL", query);
     expectedId[oraclizeId] = id;
   }

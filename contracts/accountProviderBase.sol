@@ -1,6 +1,6 @@
-import "dev.oraclize.it/api.sol";
+import "oraclizeAPI.sol";
 
-contract accountProvider is usingOraclize {
+contract accountProviderBase is usingOraclize {
   function nibbleToChar(uint nibble) internal returns (uint ret) {
     if (nibble > 9)
       return nibble + 87; // nibble + 'a'- 10
@@ -31,4 +31,7 @@ contract accountProvider is usingOraclize {
 
     return ret;
   }
+
+  // To be implemented by the provider
+  function verify(bytes32 id, string userId, string proofLocation);
 }
