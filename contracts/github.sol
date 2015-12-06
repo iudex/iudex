@@ -33,7 +33,7 @@ contract Github is accountProviderBase {
     if (msg.sender != oraclize_cbAddress()) throw;
 
     // this is basically a bytes32 to hexstring piece
-    string memory expected = string(addressToBytes(address(expectedId[myid])));
+    string memory expected = iudexIdToString(expectedId[myid]);
     bool asExpected = strCompare(expected, result) == 0;
     Storage(lookup.addrStorage()).updateAccount(lookup.accountProvider_GITHUB(), expectedId[myid], asExpected, myid);
   }

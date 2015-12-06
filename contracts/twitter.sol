@@ -28,6 +28,7 @@ contract Twitter is accountProviderBase {
   // map the expected identifier to an oraclize identifier
   mapping (bytes32 => bytes32) expectedId;
 
+  // true if verification, otherwise scoring
   mapping (bytes32 => bool) isVerification;
 
   // callback from oraclize with the result, let the storage contract know
@@ -61,7 +62,7 @@ contract Twitter is accountProviderBase {
 
   function processVerification(bytes32 myid, string result) internal {
     // this is basically a bytes32 to hexstring piece
-    string memory expected = string(addressToBytes(address(expectedId[myid])));
+    string memory expected = iudexIdToString(expectedId[myid]);
     bool asExpected = strCompare(expected, result) == 0;
     Storage(lookup.addrStorage()).updateAccount(lookup.accountProvider_TWITTER(), expectedId[myid], asExpected, myid);
   }

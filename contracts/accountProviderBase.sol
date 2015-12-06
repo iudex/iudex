@@ -33,6 +33,31 @@ contract accountProviderBase is abstract, usingOraclize {
     return ret;
   }
 
+  function b32ToBytes(bytes32 input) internal returns (bytes) {
+    uint tmp = uint(input);
+
+    string memory holder = new string(64);
+    bytes memory ret = bytes(holder);
+
+    // NOTE: this is written in an expensive way, as out-of-order array access
+    //       is not supported yet, e.g. we cannot go in reverse easily
+    //       (or maybe it is a bug: https://github.com/ethereum/solidity/issues/212)
+    uint j = 0;
+    for (uint i = 0; i < 32; i++) {
+      uint _tmp = tmp / (2 ** (8*(31-i))); // shr(tmp, 8*(19-i))
+      uint nb1 = (_tmp / 0x10) & 0x0f;     // shr(tmp, 8) & 0x0f
+      uint nb2 = _tmp & 0x0f;
+      ret[j++] = byte(nibbleToChar(nb1));
+      ret[j++] = byte(nibbleToChar(nb2));
+    }
+
+    return ret;
+  }
+
+  function iudexIdToString(bytes32 id) internal returns (string) {
+    return string(b32ToBytes(id));
+  }
+
   // To be implemented by the provider
   function verify(bytes32 id, string userId, string proofLocation);
   function score(bytes32 id, string userId);
