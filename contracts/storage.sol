@@ -134,4 +134,19 @@ contract Storage {
     account.ipfsProof = ipfsProof;
     person.accounts[accountProvider] = account; // FIXME: is this needed? I don't think its needed as above is not memory? I think it's already done automatically being a reference
   }
+
+  function getScore(uint8 accountProvider, bytes32 id) public returns (uint24) {
+    Person person = persons[id];
+    // This ID is not in the system yet
+    if (person.id != id)
+      throw; // FIXME: throw?
+
+    // Update the account with the verification result
+    Account account = person.accounts[accountProvider];
+    // This verification wasn't initiated from Storage
+    if (account.accountProvider == 0)
+      throw; // FIXME: throw?
+
+    return account.score;
+  }
 }
