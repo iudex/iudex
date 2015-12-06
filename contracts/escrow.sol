@@ -20,10 +20,10 @@ contract EthBtcEscrow is usingOraclize, usingIudex {
   string reqURL;
   uint timestampLimit;
 
-  address constant lookupAddr = 0x0;
+  address constant IudexLookupAddr = 0x0;
 
   function getMinConfirmationsByAddr(address _ethAddr) internal returns (uint) {
-      uint score = getIudexScoreAll(lookupAddr, _ethAddr);
+      uint score = getIudexScoreAll(IudexLookupAddr, _ethAddr);
       return 10 - ((score - 1)/100000);
   }
 
