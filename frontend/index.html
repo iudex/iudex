@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Iudex</title>
+    <script type="application/javascript" src="http://code.jquery.com/jquery-1.11.3.min.js"></script>
+    <script type="application/javascript" src="http://www.oraclize.it/assets/js/web3.min.js"></script>
+    <script type="application/javascript" src="app.js"></script>
+</head>
+<body>
+
+    <section id="intro"></section>
+    <div id="intro">
+        <div class="container">
+            <div class="row centered">
+                <div class="col-lg-6 col-lg-offset-3">
+                    <div class="col-md-6">
+                        <h1>Iudex</h1>
+                        <h3>The transparent smart contract based reputation system.</h3>
+                        <p><a href="/docs">Read more</a> (in fact, a lot!) in the documentation. Comment on <a href="https://www.reddit.com/r/ethereum">reddit<a> and vote for us on <a href="http://hack.ether.camp/">Ether.Camp</a>.</p>
+                        <p>This was created during the <a href="http://hack.ether.camp">Ether.Camp</a> hackathon</p>
+                        <p>You can use the below to try out a few things.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="lookup"></section>
+    <div id="lookup">
+        <div class="container">
+            <div class="row centered">
+                <div class="col-lg-6 col-lg-offset-3">
+                    <div class="col-md-6">
+                        <h2>Lookup a Iudex identifier based on Ethereum address</h2>
+                        <form id="lookup" action="">
+                            <label for="lookup_address">Address: </label><input type="text" id="lookup_address"><br/>
+                            <input type="submit" id="lookup_submit" value="Submit"><br/>
+                        </form>
+                        <div id="lookup_result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="getscore"></section>
+    <div id="getscore">
+        <div class="container">
+            <div class="row centered">
+                <div class="col-lg-6 col-lg-offset-3">
+                    <div class="col-md-6">
+                        <h2>Get score of a user</h2>
+                        <form id="score" action="">
+                            <label for="score_userId">User ID: </label><input type="text" id="score_userId"><br/>
+                            <input type="submit" id="score_submit" value="Submit"><br/>
+                        </form>
+                        <div id="score_result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="register"></section>
+    <div id="register">
+        <div class="container">
+            <div class="row centered">
+                <div class="col-lg-6 col-lg-offset-3">
+                    <div class="col-md-6">
+                        <h2>Register a new account</h2>
+                        <p>Make sure your RPC connection is working</p>
+                        <form id="register" action="">
+                            <label for="register_account">Ether account: </label><input type="text" id="register_account"><br/>
+                            <input type="submit" id="register_submit" value="Submit"><br/>
+                        </form>
+                        <div id="register_result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section id="linktwitter"></section>
+    <div id="linktwitter">
+        <div class="container">
+            <div class="row centered">
+                <div class="col-lg-6 col-lg-offset-3">
+                    <div class="col-md-6">
+                        <h2>Verify Twitter account</h2>
+                        <p>Please tweet your user ID first. You can include anything in the tweet as long as it is present.</p>
+                        <form id="twitter" action="">
+                            <label for="twitter_username">Twitter username: </label><input type="text" id="twitter_username"><br/>
+                            <label for="twitter_url">Tweet URL: </label><input type="text" id="twitter_url"><br/>
+                            <input type="submit" id="twitter_submit" value="Submit"></br>
+                        </form>
+                        <div id="twitter_result"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>
