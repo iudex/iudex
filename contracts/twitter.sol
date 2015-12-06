@@ -32,7 +32,7 @@ contract Twitter is accountProviderBase {
   mapping (bytes32 => bool) isVerification;
 
   // callback from oraclize with the result, let the storage contract know
-  function __callback(bytes32 myid, string result) {
+  function __callback(bytes32 myid, string result, string proof) {
     if (msg.sender != oraclize_cbAddress()) throw;
 
     if (isVerification[myid])
@@ -47,9 +47,9 @@ contract Twitter is accountProviderBase {
 
   function processScore(bytes32 myid, string result) internal {
     uint followers = parseInt(result);
-    uint newScore = 1000000;
+    uint24 newScore = 1000000;
     if (followers / 10000 == 0)
-      newScore = 100 * (followers % 10000);
+      newScore = 100 * uint24(followers % 10000);
 
     Storage(lookup.addrStorage()).updateScore(lookup.accountProvider_TWITTER(), expectedId[myid], newScore);
   }
@@ -70,6 +70,7 @@ contract Twitter is accountProviderBase {
       _query[i++] = _userId[j];
     for (j = 0; j < _tail.length; j++)
       _query[i++] = _tail[j];
+    oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
     bytes32 oraclizeId = oraclize_query("URL", query);
     expectedId[oraclizeId] = id;
     isVerification[oraclizeId] = false;
@@ -129,6 +130,7 @@ contract Twitter is accountProviderBase {
       _query[i++] = _tail[j];
     _query[i++] = 0;
 
+    oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
     bytes32 oraclizeId = oraclize_query("URL", query);
     expectedId[oraclizeId] = id;
     isVerification[oraclizeId] = true;
