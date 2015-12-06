@@ -2,7 +2,9 @@ var Web3 = require('web3');
 
 // Connect to node; either Mist, supplied URL or the default on
 function connectNode(url) {
-  if (typeof web3 !== 'undefined') // Mist
+  console.log("Connecting to node", url);
+
+  if (typeof url === 'undefined' && typeof web3 !== 'undefined') // Mist
     web3 = new Web3(web3.currentProvider);
   else {
     if (typeof url === 'undefined')
@@ -72,6 +74,20 @@ $(document).ready(function() {
   }
 
   console.log("Setting up jquery hooks");
+
+
+  $("#config_form").submit(function(event) {
+    event.preventDefault();
+
+    console.log("Changing rpc url");
+
+    url = $("#config_url").val();
+    console.log(url);
+    connectNode(url);
+    $("#config_result").text("Done!");
+    return false;
+  });
+
 
   $("#lookup_form").submit(function(event) {
     event.preventDefault();
