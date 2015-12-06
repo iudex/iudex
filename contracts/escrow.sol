@@ -11,21 +11,9 @@
 */
 
 import "oraclizeAPI.sol";
+import "iudexAPI.sol";
 
-
-contract Iudex is abstract {
-    uint public accountProvider_ALL = 0;
-    uint public extraData_BITCOIN = 0;
-    mapping (address => bytes32) public addressToPersonId;
-    function getScore(uint accountProvider, bytes32 id) public returns (uint);
-}
-
-contract LookupI is abstract {
-    address public addrStorage;
-}
-
-contract EthBtcEscrow is usingOraclize {
-
+contract EthBtcEscrow is usingOraclize, usingIudex {
   uint mBTC;
   address ethAddr;
   address ethReturnAddr;
@@ -34,9 +22,8 @@ contract EthBtcEscrow is usingOraclize {
 
   address constant lookupAddr = 0x0;
 
-  function getMinConfirmationsByAddr(address _ethAddr) internal returns (uint){
-      Iudex iudex = Iudex(LookupI(lookupAddr).addrStorage());
-      uint score = iudex.getScore(iudex.accountProvider_ALL(), iudex.addressToPersonId(_ethAddr));
+  function getMinConfirmationsByAddr(address _ethAddr) internal returns (uint) {
+      uint score = getIudexScoreAll(lookupAddr, _ethAddr);
       return 10 - ((score - 1)/100000);
   }
 
