@@ -17,6 +17,10 @@ The verification and scoring processes/algorithms are elected based on voting by
 Therefore new ways to calculate reputation can replace current ones, if the public
 deems them more appropriate or accurate.
 
+## A live example frontend interfacing with the API is [available here](http://iudex.on.ether.camp:8080/frontend/).
+
+Make sure to check the frontend, within Mist too!
+
 ### Verification process
 
 Before verification can proceed, a user has to create a new Iudex account, which
@@ -51,6 +55,16 @@ As an example we have included an escrow contract for selling Bitcoins for Ether
 
 The reputation score of the seller is used to determine how many confirmations are
 needed at a minimum after receiving the Bitcoins and before releasing the Ethers.
+
+Let's see how simple it is to interface with Iudex. The interface used by the escrow:
+```js
+  function getMinConfirmationsByAddr(address _ethAddr) internal returns (uint) {
+      uint score = getIudexScoreAll(IudexLookupAddr, _ethAddr);
+      return 10 - ((score - 1)/100000);
+  }
+```
+
+Full code is available [here](https://bitbucket.org/iudex/).
 
 
 ## Architecture
