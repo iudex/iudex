@@ -8,7 +8,8 @@ contract Iudex is abstract {
 
   uint8 public extraData_BITCOIN = 0;
 
-  mapping (address => bytes32) public addressToPersonId;
+  //mapping (address => bytes32) public addressToPersonId;
+  function addressToPersonId(address addr) returns (bytes32);
   function register() returns (bytes32);
   function linkAddress(address addr);
   function unlinkAddress(address addr);
