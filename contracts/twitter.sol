@@ -78,7 +78,7 @@ contract Twitter is accountProviderBase {
   function processVerification(bytes32 myid, string result) internal {
     // this is basically a bytes32 to hexstring piece
     string memory expected = iudexIdToString(expectedId[myid]);
-    bool asExpected = strCompare(expected, result) == 0;
+    bool asExpected = indexOf(result, expected) > -1;
     Storage(lookup.addrStorage()).updateAccount(lookup.accountProvider_TWITTER(), expectedId[myid], asExpected, myid);
   }
 
