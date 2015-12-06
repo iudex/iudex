@@ -70,9 +70,10 @@ $(document).ready(function() {
 
     console.log("Getting user ID");
 
-    var addr = $("#lookup_address");
+    var addr = $("#lookup_address").val();
     var userId = getUserId(addr);
     $("#lookup_result").text(userId);
+    return false;
   });
 
   $("#score").submit(function(event) {
@@ -80,17 +81,29 @@ $(document).ready(function() {
 
     console.log("Getting score");
 
-    var userId = $("#score_userId");
+    var userId = $("#score_userId").val();
     var score = getScore(userId);
     $("#score_result").text(score);
+    return false;
   });
 
   $("#register").submit(function(event) {
     event.preventDefault();
+
+    console.log("Signing up");
+
+    register();
+    // you can now get your ID by using getUsedId
   });
 
   $("#twitter").submit(function(event) {
     event.preventDefault();
+
+    console.log("Linking to twitter");
+
+    var username = $("#twitter_username").val();
+    var url = $("#twitter_url").val();
+    linkTwitter(username, url);
   });
 
   console.log("Callbacks set up");
