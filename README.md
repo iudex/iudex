@@ -1,9 +1,10 @@
 # Iudex
 
 Iudex is a smart contract based reputation system. As a user, you are able to verify
-your the ownership of accounts of different services (such as your Twitter,
+the ownership of accounts of different services (such as your Twitter,
 Facebook and Github account) as well as link one or more Ethereum addresses. In the
-future it will also support verifying ownership of Bitcoin addresses.
+future it will also support verifying ownership of Bitcoin addresses via ``ecverify``
+and verifying ownership of domain names via DNS records.
 
 Iudex also includes a scoring system for each of these accounts, calculating how
 reputable you are on each of them. Additionally it provides a combined score across
@@ -12,7 +13,7 @@ all your linked accounts.
 Both the list of verified accounts and the scores can be queried by the public and
 used in various way.
 
-The verification and scoring processes are elected based on voting by the public.
+The verification and scoring processes/algorithms are elected based on voting by the public.
 Therefore new ways to calculate reputation can replace current ones, if the public
 deems them more appropriate or accurate.
 
@@ -25,12 +26,18 @@ register.
 The verification process is unique to each of the services, but usually it follows
 these steps:
 
-- the registered user of Iudex receives a unique code to publish
+- the registered user of Iudex receives a unique code to publish (his ID)
 - the user publishes this code on the given services (e.g. posts a tweet with it)
 - this proof location (e.g. the url of the exact tweet) is then submitted
   to Iudex along with the username
 - Iudex will connect to this URL via [Oraclize.it](http://oraclize.it) and will verify if the code
   matches (it is of course possible to have verifiers without using *Oraclize* or others oracles)
+
+With *Oraclize* we are storing the IPFS key to the proof of the transactions. See
+[this](https://docs.oraclize.it/call_execution.html#tlsnotary-proof)
+for an explanation how and what kind of proofs are provided by Oraclize.
+You can independently check the honesty of the service by using
+[this web-based client-side tool](http://www.oraclize.it/service/monitor).
 
 ### Scoring process
 
@@ -121,7 +128,7 @@ The public methods are:
 The private methods are:
 
 - ```updateAccount(uint8 accountProvider, bytes32 id, bool result, bytes32 ipfsProof)``` -
-  used by account providers to update Storage with the result of the verifiaciton
+  used by account providers to update Storage with the result of the verification
 - ```updateScore(uint8 accountProvider, bytes32 id, uint24 score)``` - used by score
   providers to update Storage with a new score
 
