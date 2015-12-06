@@ -10,6 +10,8 @@ function connectNode(url) {
     web3 = new Web3(new Web3.providers.HttpProvider(url));
   }
 
+  console.log("Connected to node", web3);
+
   web3.eth.defaultAccount = web3.eth.coinbase;
 
   loadContracts();
@@ -62,9 +64,16 @@ function linkTwitter(username, url) {
 }
 
 $(document).ready(function() {
+  try {
+    connectNode();
+  } catch(e) {
+    console.log("Cannot connect to node", e);
+    alert("Couldn't connect to RPC node " + e);
+  }
+
   console.log("Setting up jquery hooks");
 
-  $("#lookup").submit(function(event) {
+  $("#lookup_form").submit(function(event) {
     event.preventDefault();
 
     console.log("Getting user ID");
@@ -75,7 +84,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $("#score").submit(function(event) {
+  $("#score_form").submit(function(event) {
     event.preventDefault();
 
     console.log("Getting score");
@@ -86,7 +95,7 @@ $(document).ready(function() {
     return false;
   });
 
-  $("#register").submit(function(event) {
+  $("#register_form").submit(function(event) {
     event.preventDefault();
 
     console.log("Signing up");
@@ -95,7 +104,7 @@ $(document).ready(function() {
     // you can now get your ID by using getUsedId
   });
 
-  $("#twitter").submit(function(event) {
+  $("#twitter_form").submit(function(event) {
     event.preventDefault();
 
     console.log("Linking to twitter");
