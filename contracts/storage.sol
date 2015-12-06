@@ -149,4 +149,22 @@ contract Storage {
 
     return account.score;
   }
+
+  function updateScore(uint8 accountProvider, bytes32 id, uint24 score) {
+    if (msg.sender != lookup.accountProviders(accountProvider))
+      throw;
+
+    Person person = persons[id];
+    // This ID is not in the system yet
+    if (person.id != id)
+      throw; // FIXME: throw?
+
+    Account account = person.accounts[accountProvider];
+    // The account isn't created yet
+    if (account.accountProvider == 0)
+      throw; // FIXME: throw?
+
+    account.score = score;
+    person.accounts[accountProvider] = account; // FIXME: is this needed? I don't think its needed as above is not memory? I think it's already done automatically being a reference
+  }
 }
