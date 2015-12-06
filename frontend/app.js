@@ -6,8 +6,7 @@ function connectNode(url) {
     web3 = new Web3(web3.currentProvider);
   else {
     if (typeof url === 'undefined')
-      url = "http://localhost:8080";
-//      url = "http://localhost:8545";
+      url = "http://localhost:8545";
     web3 = new Web3(new Web3.providers.HttpProvider(url));
   }
 
