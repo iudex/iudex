@@ -64,7 +64,7 @@ Let's see how simple it is to interface with Iudex. The interface used by the es
   }
 ```
 
-Full code is available [here](https://bitbucket.org/iudex/).
+Full code is available [here](https://bitbucket.org/iudex/code/src/30c1bc5e5287025f8c52afdb97f5691d0b931867/contracts/escrow.sol?at=master&fileviewer=file-view-default).
 
 
 ## Architecture
