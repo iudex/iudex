@@ -35,4 +35,5 @@ contract accountProviderBase is abstract, usingOraclize {
 
   // To be implemented by the provider
   function verify(bytes32 id, string userId, string proofLocation);
+  function score(bytes32 id, string userId);
 }

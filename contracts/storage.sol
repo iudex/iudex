@@ -115,6 +115,7 @@ contract Storage {
     accountProviderBase(lookup.accountProviders(accountProvider)).verify(id, userId, proofLocation);
   }
 
+  // Internal function, only accountProviders can call this
   function updateAccount(uint8 accountProvider, bytes32 id, bool result, bytes32 ipfsProof) {
     if (msg.sender != lookup.accountProviders(accountProvider))
       throw;
@@ -150,6 +151,7 @@ contract Storage {
     return account.score;
   }
 
+  // Internal function, only accountProviders can call this. It updates the score
   function updateScore(uint8 accountProvider, bytes32 id, uint24 score) {
     if (msg.sender != lookup.accountProviders(accountProvider))
       throw;
@@ -166,5 +168,20 @@ contract Storage {
 
     account.score = score;
     person.accounts[accountProvider] = account; // FIXME: is this needed? I don't think its needed as above is not memory? I think it's already done automatically being a reference
+  }
+
+  // Initiate recalculation of a score
+  function refreshScore(uint8 accountProvider, bytes32 id) {
+    Person person = persons[id];
+    // This ID is not in the system yet
+    if (person.id != id)
+      throw; // FIXME: throw?
+
+    Account account = person.accounts[accountProvider];
+    // The account isn't created yet
+    if (account.accountProvider == 0)
+      throw; // FIXME: throw?
+
+    accountProviderBase(lookup.accountProviders(accountProvider)).score(id, account.userId);
   }
 }

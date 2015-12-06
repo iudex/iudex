@@ -14,6 +14,7 @@ contract Iudex is abstract {
   function unlinkAddress(address addr);
   function linkAccount(uint8 accountProvider, string userId, string proofLocation);
   function getScore(uint accountProvider, bytes32 id) public returns (uint);
+  function refreshScore(uint8 accountProvider, bytes32 id);
 }
 
 contract IudexLookupI is abstract {

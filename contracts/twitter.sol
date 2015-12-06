@@ -28,10 +28,38 @@ contract Twitter is accountProviderBase {
   // map the expected identifier to an oraclize identifier
   mapping (bytes32 => bytes32) expectedId;
 
+  mapping (bytes32 => bool) isVerification;
+
   // callback from oraclize with the result, let the storage contract know
   function __callback(bytes32 myid, string result) {
     if (msg.sender != oraclize_cbAddress()) throw;
 
+    if (isVerification[myid])
+      processVerification(myid, result);
+    else
+      processScore(myid, result);
+
+    // clean up
+    delete expectedId[myid];
+    delete isVerification[myid];
+  }
+
+  function processScore(bytes32 myid, string result) internal {
+    // FIXME: implement the actual processing/calculation
+    Storage(lookup.addrStorage()).updateScore(lookup.accountProvider_TWITTER(), expectedId[myid], 0);
+  }
+
+  // start the scoring process and call oraclize with the URL
+  function score(bytes32 id, string userId, string proofLocation) coupon("HackEtherCamp") {
+    // FIXME: implement the actual query
+    string memory query = "this-will-fail";
+
+    bytes32 oraclizeId = oraclize_query("URL", query);
+    expectedId[oraclizeId] = id;
+    isVerification[oraclizeId] = false;
+  }
+
+  function processVerification(bytes32 myid, string result) internal {
     // this is basically a bytes32 to hexstring piece
     string memory expected = string(addressToBytes(address(expectedId[myid])));
     bool asExpected = strCompare(expected, result) == 0;
@@ -87,5 +115,6 @@ contract Twitter is accountProviderBase {
 
     bytes32 oraclizeId = oraclize_query("URL", query);
     expectedId[oraclizeId] = id;
+    isVerification[oraclizeId] = true;
   }
 }
