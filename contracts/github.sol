@@ -52,7 +52,7 @@ contract Github is accountProviderBase {
       _urlHead[i++] = _userId[j];
     _urlHead[i++] = byte("/");
 
-    if (indexOf(string(_urlHead), proofLocation) == -1)
+    if (indexOf(proofLocation, string(_urlHead)) == -1)
       return false;
 
     return true;
