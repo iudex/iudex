@@ -36,6 +36,7 @@ contract Github is accountProviderBase {
     string memory expected = iudexIdToString(expectedId[myid]);
     bool asExpected = strCompare(expected, result) == 0;
     Storage(lookup.addrStorage()).updateAccount(lookup.accountProvider_GITHUB(), expectedId[myid], asExpected, myid);
+    delete expectedId[myid];
   }
 
   // ensure that the proofLocation corresponds to a gist.github.com URL for the user `userId`
