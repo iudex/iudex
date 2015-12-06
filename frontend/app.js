@@ -48,7 +48,7 @@ function loadContracts() {
 // Simple helpers for the HTML integration
 
 function register() {
-  storageContract.register();
+  return storageContract.register();
 }
 
 function getUserId(addr) {
@@ -100,8 +100,8 @@ $(document).ready(function() {
 
     console.log("Signing up");
 
-    register();
-    // you can now get your ID by using getUsedId
+    var txid = register();
+    $("#register_result").html("txid="+txid+"; After the tx is mined you can look for your userID with the first form");
   });
 
   $("#twitter_form").submit(function(event) {
