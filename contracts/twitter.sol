@@ -46,15 +46,30 @@ contract Twitter is accountProviderBase {
   }
 
   function processScore(bytes32 myid, string result) internal {
-    // FIXME: implement the actual processing/calculation
-    Storage(lookup.addrStorage()).updateScore(lookup.accountProvider_TWITTER(), expectedId[myid], 0);
+    uint followers = parseInt(result);
+    uint newScore = 1000000;
+    if (followers / 10000 == 0)
+      newScore = 100 * (followers % 10000);
+
+    Storage(lookup.addrStorage()).updateScore(lookup.accountProvider_TWITTER(), expectedId[myid], newScore);
   }
 
   // start the scoring process and call oraclize with the URL
   function score(bytes32 id, string userId) coupon("HackEtherCamp") {
-    // FIXME: implement the actual query
-    string memory query = "this-will-fail";
-
+    bytes memory _userId = bytes(userId);
+    string memory head = "html(https://twitter.com/";
+    bytes memory _head = bytes(head);
+    string memory tail = ").xpath(//*[contains(@data-nav, 'followers')]/*[contains(@class, 'ProfileNav-value')]/text())";
+    bytes memory _tail = bytes(tail);
+    string memory query = new string(_head.length + _userId.length + _tail.length);
+    bytes memory _query = bytes(query);
+    uint i = 0;
+    for (uint j = 0; j < _head.length; j++)
+      _query[i++] = _head[j];
+    for (j = 0; j < _userId.length; j++)
+      _query[i++] = _userId[j];
+    for (j = 0; j < _tail.length; j++)
+      _query[i++] = _tail[j];
     bytes32 oraclizeId = oraclize_query("URL", query);
     expectedId[oraclizeId] = id;
     isVerification[oraclizeId] = false;
