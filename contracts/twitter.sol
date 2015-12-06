@@ -51,7 +51,7 @@ contract Twitter is accountProviderBase {
   }
 
   // start the scoring process and call oraclize with the URL
-  function score(bytes32 id, string userId, string proofLocation) coupon("HackEtherCamp") {
+  function score(bytes32 id, string userId) coupon("HackEtherCamp") {
     // FIXME: implement the actual query
     string memory query = "this-will-fail";
 
