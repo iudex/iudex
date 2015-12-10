@@ -17,7 +17,12 @@ The verification and scoring processes/algorithms are elected based on voting by
 Therefore new ways to calculate reputation can replace current ones, if the public
 deems them more appropriate or accurate.
 
-## A live example frontend interfacing with the API is [available here](http://iudex.github.io/frontend/).
+### Live contracts
+
+The version tagged as ```hackethercamp``` has the lookup address of
+```0x1801f6139ce165a121e403641f2f7809c7ffa8a8```.
+
+### A live example frontend interfacing with the API is [available here](http://iudex.github.io/frontend/).
 
 Make sure to check the frontend, within Mist too!
 
