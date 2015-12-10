@@ -34,7 +34,7 @@ contract Github is accountProviderBase {
 
     // this is basically a bytes32 to hexstring piece
     string memory expected = iudexIdToString(expectedId[myid]);
-    bool asExpected = strCompare(expected, result) == 0;
+    bool asExpected = indexOf(result, expected) > -1;
     Storage(lookup.addrStorage()).updateAccount(lookup.accountProvider_GITHUB(), expectedId[myid], asExpected, myid);
     delete expectedId[myid];
   }
