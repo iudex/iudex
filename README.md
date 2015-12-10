@@ -17,7 +17,7 @@ The verification and scoring processes/algorithms are elected based on voting by
 Therefore new ways to calculate reputation can replace current ones, if the public
 deems them more appropriate or accurate.
 
-## A live example frontend interfacing with the API is [available here](http://iudex.on.ether.camp:8080/frontend/).
+## A live example frontend interfacing with the API is [available here](http://iudex.github.io/frontend/).
 
 Make sure to check the frontend, within Mist too!
 
@@ -64,7 +64,7 @@ Let's see how simple it is to interface with Iudex. The interface used by the es
   }
 ```
 
-Full code is available [here](https://bitbucket.org/iudex/code/src/30c1bc5e5287025f8c52afdb97f5691d0b931867/contracts/escrow.sol?at=master&fileviewer=file-view-default).
+Full code is available [here](https://github.com/iudex/iudex/blob/master/contracts/escrow.sol).
 
 
 ## Architecture
@@ -176,7 +176,7 @@ handy methods to retrieve a reputation score:
 
 ## Authors
 
-Iudex was entirely created during the hack.ether.camp online hackathon by:
+Iudex was entirely created during the [hack.ether.camp](http://hack.ether.camp) online hackathon by:
 
 - Alex Beregszaszi [twitter](http://twitter.com/alexberegszaszi) [github](http://github.com/axic)
 - Thomas Bertani [twitter](http://twitter.com/ThomasBertani) [github](http://github.com/bertani)
