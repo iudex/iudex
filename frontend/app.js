@@ -61,6 +61,10 @@ function getScore(userId) {
   return storageContract.getScore.call(accountProvider_TWITTER, userId);
 }
 
+function refreshScore(userId) {
+  storageContract.refreshScore.call(accountProvider_TWITTER, userId);
+}
+
 function linkTwitter(username, url) {
   storageContract.linkAccount(accountProvider_TWITTER, username, url, { gas: 300000 });
 }
@@ -109,6 +113,16 @@ $(document).ready(function() {
     var score = getScore(userId);
     $("#score_result").text(score);
     return false;
+  });
+
+  $("#refreshscore_form").submit(function(event) {
+    event.preventDefault();
+
+    console.log("Calculating score");
+
+    var userId = $("#refreshscore_userId").val();
+    var txid = refreshScore(userId);
+    $("#refreshscore_result").text("txid="+txid+"; After the tx is mined, you can look for a new score using Get Score");
   });
 
   $("#register_form").submit(function(event) {
