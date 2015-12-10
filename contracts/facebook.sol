@@ -29,7 +29,7 @@ contract Facebook is accountProviderBase {
   mapping (bytes32 => bytes32) expectedId;
 
   // callback from oraclize with the result, let the storage contract know
-  function __callback(bytes32 myid, string result) {
+  function __callback(bytes32 myid, string result, string proof) {
     if (msg.sender != oraclize_cbAddress()) throw;
 
     // this is basically a bytes32 to hexstring piece
@@ -84,6 +84,7 @@ contract Facebook is accountProviderBase {
       _query[i++] = _tail[j];
     _query[i++] = 0;
 
+    oraclize_setProof(proofType_TLSNotary | proofStorage_IPFS);
     bytes32 oraclizeId = oraclize_query("URL", query);
     expectedId[oraclizeId] = id;
   }
