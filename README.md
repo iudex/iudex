@@ -19,8 +19,7 @@ deems them more appropriate or accurate.
 
 ### Live contracts
 
-The version tagged as ```hackethercamp``` has the lookup address of
-```0x1801f6139ce165a121e403641f2f7809c7ffa8a8```.
+The version tagged as ```hackethercamp``` has the lookup address of ```0x1801f6139ce165a121e403641f2f7809c7ffa8a8```.
 
 ### A live example frontend interfacing with the API is [available here](http://iudex.github.io/frontend/).
 
