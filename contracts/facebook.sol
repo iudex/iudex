@@ -39,6 +39,10 @@ contract Facebook is accountProviderBase {
     delete expectedId[myid];
   }
 
+  function score(bytes32 id, string userId) coupon("HackEtherCamp") {
+    throw;
+  }
+
   // ensure that the proofLocation corresponds to a gist.github.com URL for the user `userId`
   function verifyUrl(string userId, string proofLocation) internal returns (bool){
     bytes memory _userId = bytes(userId);
