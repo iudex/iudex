@@ -92,6 +92,18 @@ $(document).ready(function() {
     return false;
   });
 
+  $("#demo_submit").click(function(event) {
+    event.preventDefault();
+
+    console.log("Changing rpc url");
+
+    url ="http://178.62.29.206:8081/";
+    $("#config_url").val(url);
+    console.log(url);
+    connectNode(url);
+    $("#config_result").text("Done!");
+    return false;
+  });
 
   $("#lookup_form").submit(function(event) {
     event.preventDefault();
