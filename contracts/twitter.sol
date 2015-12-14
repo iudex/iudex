@@ -32,7 +32,7 @@ contract Twitter is accountProviderBase {
   mapping (bytes32 => bool) isVerification;
 
   // callback from oraclize with the result, let the storage contract know
-  function __callback(bytes32 myid, string result, string proof) {
+  function __callback(bytes32 myid, string result, bytes proof) {
     if (msg.sender != oraclize_cbAddress()) throw;
 
     if (isVerification[myid])
