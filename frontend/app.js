@@ -14,7 +14,10 @@ function connectNode(url) {
 
   console.log("Connected to node", web3);
 
-  web3.eth.defaultAccount = web3.eth.coinbase;
+  try {
+    web3.eth.defaultAccount = web3.eth.coinbase;
+  } catch(e) {
+  }
 
   loadContracts();
 }
